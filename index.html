@@ -9,32 +9,54 @@
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
-
 </head>
 <script>
+function displayDropdown(){
+    return $('#menuList').append(
+            '<li><a id="githubPages" class="dropdown-button" href="#!" data-activates="dropdown1">' +
+                'Github Projects'+
+                '<i class="material-icons right">arrow_drop_down</i>'+
+            '</a></li>');
+}
+
 $(document).ready(function(){
     $.get("./home.html").done(function(data){
         $('#pageContent').html(data);
-    })
+    });
+    $.get("https://api.github.com/users/eclion/repos").done(function(data){
+        var dropdownContent = data
+            .filter(function(repo){return repo.has_pages;})
+            .filter(function(repo){return repo.url != "https://api.github.com/repos/Eclion/eclion.github.io";})
+            .map(function(repo){return '<li><a href="#'+repo.name+'">' + repo.name + '</a></li>';})
+            .join("");
+        $('#dropdown1').html(dropdownContent);
+        if(dropdownContent){
+          displayDropdown()
+        }
+    });
 });
 </script>
 <body>
 
 <div class="navbar-fixed">
+    <ul id="dropdown1" class="dropdown-content"></ul>
     <nav>
         <div class="nav-wrapper">
             <div class="col s12">
                 <a href="/" class="brand-logo"><!--<img src="/images/full-logo-no-neck.png" class="logo-img" alt="">-->
-                    eclion.github.io</a>
-                <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+                    eclion.github.io
+                </a>
+                <a href="#" data-activates="mobile-demo" class="button-collapse">
+                    <i class="material-icons">menu</i>
+                </a>
 
-                <ul class="right hide-on-med-and-down">
-                    <li class="link"><a href="/github">Github Projects</a></li>
+                <ul id="menuList" class="right hide-on-med-and-down">
+
                 </ul>
 
-                <ul class="side-nav" id="mobile-demo" style="transform: translateX(-100%);">
+                <!-- <ul class="side-nav" id="mobile-demo" style="transform: translateX(-100%);">
                     <li><a href="/github">Github projects</a></li>
-                </ul>
+                </ul> -->
 
             </div>
         </div>
