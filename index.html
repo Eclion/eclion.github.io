@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>eclion.github.io</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
 </head>
+<!--<script>
+    var pageContent = document.getElementById("pageContent");
+    pageContent.innerHTML = "test";
+</script>-->
 <body>
-Hello world
+
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a href="/" class="brand-logo"><!--<img src="/images/full-logo-no-neck.png" class="logo-img" alt="">-->
+                    eclion.github.io</a>
+                <!--<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>-->
+
+                <ul class="right hide-on-med-and-down">
+                    <li class="link"><a href="/github">Github Projects</a></li>
+                </ul>
+
+                <ul class="side-nav" id="mobile-demo" style="transform: translateX(-100%);">
+                    <li><a href="/github">Github projects</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</div>
+
+<center>
+    <br/>
+    <div id="pageContent"></div>
+</center>
 </body>
 </html>
