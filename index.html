@@ -12,7 +12,7 @@
 </head>
 <script>
 function displayDropdown(){
-    return $('#menuList').append(
+    return $('#menuList').html(
             '<li><a id="githubPages" class="dropdown-button" href="#!" data-activates="dropdown1">' +
                 'Github Projects'+
                 '<i class="material-icons right">arrow_drop_down</i>'+
@@ -31,7 +31,7 @@ $(document).ready(function(){
             .join("");
         $('#dropdown1').html(dropdownContent);
         if(dropdownContent){
-          displayDropdown()
+          //displayDropdown() // doesn't display the dropdown...
         }
     });
 });
@@ -51,7 +51,10 @@ $(document).ready(function(){
                 </a>
 
                 <ul id="menuList" class="right hide-on-med-and-down">
-
+                    <li><a id="githubPages" class="dropdown-button" href="#!" data-activates="dropdown1">
+                        Github Projects
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a></li>
                 </ul>
 
                 <!-- <ul class="side-nav" id="mobile-demo" style="transform: translateX(-100%);">
