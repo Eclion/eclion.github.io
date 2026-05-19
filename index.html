@@ -5,16 +5,201 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>eclion — minimal</title>
     <link rel="stylesheet" href="styles.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anime@3/lib/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.5.4/+esm"></script>
 </head>
-<body>
-    <main class="container" role="main">
-        <h1>William Deveaux</h1>
+<body x-data="app()" x-effect="handleRoute()">
+    <!-- Home Page -->
+    <main class="container" x-show="currentPage === 'home'" role="main">
+        <h1 class="title">William Deveaux</h1>
         <p class="lead">Minimalist portfolio — software, experiments, and writing. No scrolling; everything fits a single screen.</p>
         <div class="links" aria-label="links">
-            <a href="#">Projects</a>
-            <a href="#">CV</a>
+            <a href="#projects">Projects</a>
+            <a href="#cv">CV</a>
             <a href="mailto:you@example.com">Contact</a>
         </div>
     </main>
+
+    <!-- CV Page -->
+    <main class="cv-container" x-show="currentPage === 'cv'" role="main">
+        <!-- Left Panel (Fixed) -->
+        <div class="cv-sidebar-wrapper">
+            <div class="cv-sidebar">
+                <div class="cv-title">CV</div>
+                <nav class="cv-nav">
+                    <button 
+                        @click="selectSection('experiences')" 
+                        :class="{ active: activeSection === 'experiences' }"
+                        class="nav-btn"
+                    >
+                        Experiences
+                    </button>
+                    <button 
+                        @click="selectSection('skills')" 
+                        :class="{ active: activeSection === 'skills' }"
+                        class="nav-btn"
+                    >
+                        Skills
+                    </button>
+                    <button 
+                        @click="selectSection('education')" 
+                        :class="{ active: activeSection === 'education' }"
+                        class="nav-btn"
+                    >
+                        Education
+                    </button>
+                    <button 
+                        @click="selectSection('languages')" 
+                        :class="{ active: activeSection === 'languages' }"
+                        class="nav-btn"
+                    >
+                        Languages
+                    </button>
+                </nav>
+                <a href="#" class="back-link">← Back</a>
+            </div>
+        </div>
+
+        <!-- Right Panel (Fixed) -->
+        <div class="cv-main-wrapper">
+            <div class="cv-main">
+                <div class="content-section" x-show="activeSection === 'experiences'">
+                    <h2>Experiences</h2>
+                    <div class="experience-item collapsible" @click="toggleExperience(0)">
+                        <div class="experience-header">
+                            <div class="experience-title">
+                                <h3>Senior Developer</h3>
+                                <p class="role-subtitle">Tech Company • 2022 - Present</p>
+                            </div>
+                            <span class="collapse-icon" :class="{ open: expandedExp.includes(0) }">▶</span>
+                        </div>
+                        <div class="experience-content" x-show="expandedExp.includes(0)">
+                            <p>Led development of full-stack applications and mentored junior developers.</p>
+                            <p>Led development of full-stack applications and mentored junior developers.</p>
+                        </div>
+                    </div>
+                    <div class="experience-item collapsible" @click="toggleExperience(1)">
+                        <div class="experience-header">
+                            <div class="experience-title">
+                                <h3>Frontend Developer</h3>
+                                <p class="role-subtitle">Startup Inc • 2020 - 2022</p>
+                            </div>
+                            <span class="collapse-icon" :class="{ open: expandedExp.includes(1) }">▶</span>
+                        </div>
+                        <div class="experience-content" x-show="expandedExp.includes(1)">
+                            <p>Built responsive user interfaces and improved application performance by 40%.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section" x-show="activeSection === 'skills'">
+                    <h2>Skills</h2>
+                    <div class="skill-grid">
+                        <div class="skill-item">
+                            <h3>Frontend</h3>
+                            <p>React, Vue, Alpine.js, TypeScript, Tailwind CSS</p>
+                        </div>
+                        <div class="skill-item">
+                            <h3>Backend</h3>
+                            <p>Node.js, Python, Express, Django</p>
+                        </div>
+                        <div class="skill-item">
+                            <h3>Tools</h3>
+                            <p>Git, Docker, CI/CD, AWS, Figma</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section" x-show="activeSection === 'education'">
+                    <h2>Education</h2>
+                    <div class="education-item">
+                        <h3>Bachelor of Science in Computer Science</h3>
+                        <p class="role-subtitle">University of Technology • 2016 - 2020</p>
+                        <p>GPA: 3.8/4.0 • Relevant coursework: Web Development, Data Structures, Algorithms</p>
+                    </div>
+                </div>
+
+                <div class="content-section" x-show="activeSection === 'languages'">
+                    <h2>Languages</h2>
+                    <div class="language-item">
+                        <div class="language-row">
+                            <span>English</span>
+                            <span class="level">Native</span>
+                        </div>
+                    </div>
+                    <div class="language-item">
+                        <div class="language-row">
+                            <span>French</span>
+                            <span class="level">Fluent</span>
+                        </div>
+                    </div>
+                    <div class="language-item">
+                        <div class="language-row">
+                            <span>Spanish</span>
+                            <span class="level">Intermediate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function app() {
+            return {
+                currentPage: 'home',
+                activeSection: 'experiences',
+                expandedExp: [],
+                
+                handleRoute() {
+                    const hash = window.location.hash.slice(1) || 'home';
+                    if (hash === 'cv') {
+                        this.currentPage = 'cv';
+                        this.animatePageTransition();
+                    } else {
+                        this.currentPage = 'home';
+                        this.animatePageTransition();
+                    }
+                },
+                
+                selectSection(section) {
+                    this.activeSection = section;
+                    this.animateContentChange();
+                },
+                
+                toggleExperience(index) {
+                    if (this.expandedExp.includes(index)) {
+                        this.expandedExp = this.expandedExp.filter(i => i !== index);
+                    } else {
+                        this.expandedExp.push(index);
+                    }
+                },
+                
+                animatePageTransition() {
+                    anime({
+                        targets: this.currentPage === 'cv' ? '.cv-container' : '.container',
+                        opacity: [0, 1],
+                        duration: 300,
+                        easing: 'easeOutCubic'
+                    });
+                },
+                
+                animateContentChange() {
+                    anime({
+                        targets: '.content-section',
+                        opacity: [0.5, 1],
+                        duration: 200,
+                        easing: 'easeOutCubic'
+                    });
+                },
+                
+                init() {
+                    window.addEventListener('hashchange', () => this.handleRoute());
+                    this.handleRoute();
+                }
+            }
+        }
+    </script>
 </body>
 </html>
