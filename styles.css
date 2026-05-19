@@ -105,8 +105,7 @@ p.lead{
     display:flex;
     flex-direction:column;
     gap:20px;
-    height:fit-content
-}
+    height:fit-content;
     font-size:24px;
     font-weight:600;
     letter-spacing:-0.02em
