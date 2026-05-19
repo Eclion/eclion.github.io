@@ -12,6 +12,29 @@ body{
 }
 main{display:flex;flex-direction:column;justify-content:center;width:100%;height:100vh}
 
+/* Global Footer */
+.global-footer{
+    position:fixed;
+    bottom:22px;
+    right:22px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    color:#888;
+    opacity:0.7;
+    transition:opacity 0.2s ease
+}
+.global-footer:hover{
+    opacity:1
+}
+.copilot-icon{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:block
+}
+
 /* Home Page */
 .container{
     max-width:880px;
@@ -310,6 +333,7 @@ p.lead{
 
 @media (prefers-color-scheme:dark){
     body{background:#0b0b0c;color:#e6e6e6}
+    .global-footer{color:#666}
     .links a:hover{border-color:rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)}
     .links a.primary{border-color:rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)}
     .nav-btn:hover{background:rgba(255,255,255,0.06)}
