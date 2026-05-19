@@ -207,20 +207,31 @@ h1.title{
 .experience-item.collapsible{
     cursor:pointer;
     padding:12px;
+    cursor:pointer;
+    padding:12px;
     border:1px solid rgba(0,0,0,0.06);
     border-radius:6px;
     background:rgba(0,0,0,0.01);
     margin-bottom:12px;
-    transition:all 0.2s ease
+    transition:all 0.2s ease;
 }
-.experience-item.collapsible:hover{
-    background:rgba(0,0,0,0.03)
+.experience-item.link,
+.experience-item.link:link,
+.experience-item.link:visited{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    -webkit-text-decoration-skip-ink: none;
 }
-.experience-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:12px
+.experience-item.link:hover,
+.experience-item.link:active{
+    background:rgba(0,0,0,0.03);
+    text-decoration:none;
+}
+.experience-item.link:focus{
+    outline: none;
+    box-shadow: none;
+    text-decoration:none;
 }
 .experience-title{
     flex:1

@@ -71,30 +71,36 @@
             <div class="cv-main">
                 <div class="content-section" x-show="activeSection === 'experiences'">
                     <h2>Experiences</h2>
-                    <div class="experience-item collapsible" @click="toggleExperience(0)">
+                    <a href="#cv/experience/senior" class="experience-item link">
                         <div class="experience-header">
                             <div class="experience-title">
                                 <h3>Lorem Ipsum</h3>
                                 <p class="role-subtitle">Tech Company • 2022 - Present</p>
                             </div>
-                            <span class="collapse-icon" :class="{ open: expandedExp.includes(0) }">▶</span>
                         </div>
-                        <div class="experience-content" x-show="expandedExp.includes(0)">
+                        <div class="experience-content">
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. .</p>
                         </div>
-                    </div>
-                    <div class="experience-item collapsible" @click="toggleExperience(1)">
+                    </a>
+
+                    <a href="#cv/experience/frontend" class="experience-item link">
                         <div class="experience-header">
                             <div class="experience-title">
                                 <h3>Lorem Ipsum</h3>
                                 <p class="role-subtitle">Startup Inc • 2020 - 2022</p>
                             </div>
-                            <span class="collapse-icon" :class="{ open: expandedExp.includes(1) }">▶</span>
                         </div>
-                        <div class="experience-content" x-show="expandedExp.includes(1)">
+                        <div class="experience-content">
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. .</p>
                         </div>
-                    </div>
+                    </a>
+                </div>
+
+                <div class="content-section" x-show="activeSection === 'experienceDetail'">
+                    <h2 x-text="experienceMap[activeExperience] && experienceMap[activeExperience].title"></h2>
+                    <p class="role-subtitle" x-text="experienceMap[activeExperience] && experienceMap[activeExperience].subtitle"></p>
+                    <div class="experience-body" x-html="experienceMap[activeExperience] && experienceMap[activeExperience].body"></div>
+                    <p style="margin-top:16px"><a href="#cv">← Back to CV</a></p>
                 </div>
 
                 <div class="content-section" x-show="activeSection === 'skills'">
@@ -147,20 +153,42 @@
                 currentPage: 'home',
                 activeSection: 'experiences',
                 expandedExp: [],
-                theme: 'dark',
+                theme: 'light',
+                activeExperience: null,
+                experienceMap: {
+                    senior: {
+                        title: 'Lorem Ipsum',
+                        subtitle: 'Tech Company • 2022 - Present',
+                        body: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. .</p>'
+                    },
+                    frontend: {
+                        title: 'Lorem Ipsum',
+                        subtitle: 'Startup Inc • 2020 - 2022',
+                        body: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. .</p>'
+                    }
+                },
                 
                 handleRoute() {
                     const hash = window.location.hash.slice(1) || 'home';
+                    // Nested route: cv/experience/<id>
                     if (hash === 'cv') {
                         this.currentPage = 'cv';
+                        this.activeSection = 'experiences';
+                        this.activeExperience = null;
+                    } else if (hash.startsWith('cv/experience/')) {
+                        this.currentPage = 'cv';
+                        this.activeSection = 'experienceDetail';
+                        this.activeExperience = hash.split('/')[2];
                     } else {
                         this.currentPage = 'home';
+                        this.activeSection = 'experiences';
                     }
                 },
                 
                 selectSection(section) {
                     this.activeSection = section;
-                    this.animateContentChange();
+                    // update hash for deep-linking
+                    if (section === 'experiences') window.location.hash = 'cv';
                 },
                 
                 toggleExperience(index) {
