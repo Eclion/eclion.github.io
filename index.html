@@ -19,7 +19,10 @@
     <!-- Home Page -->
     <main class="home-page" x-show="currentPage === 'home'" role="main">
         <h1 class="title">William Deveaux</h1>
-        <p class="subtext" :class="theme">Minimalist portfolio — software, experiments, and writing. No scrolling; everything fits a single screen.</p>
+        <p class="subtext" :class="theme">
+            DevOps/Site reliability engineer. Aiming for the platform engineering part of DevOps.</br></br>
+            Gamer & furniture DYI amateur on my free time.
+        </p>
         <div class="links" aria-label="links">
             <a href="#cv">CV</a>
             <a href="#projects">Projects</a>
@@ -34,34 +37,17 @@
                 <h5 style="margin-bottom: 0;">William Deveaux</h5>
                 <div class="cv-title">CV</div>
                 <nav class="cv-nav">
-                    <button 
-                        @click="selectSection('experiences')" 
-                        :class="{ active: activeSection === 'experiences' }"
-                        class="nav-btn"
-                    >
-                        Experiences
-                    </button>
-                    <button 
-                        @click="selectSection('skills')" 
-                        :class="{ active: activeSection === 'skills' }"
-                        class="nav-btn"
-                    >
-                        Skills
-                    </button>
-                    <button 
-                        @click="selectSection('education')" 
-                        :class="{ active: activeSection === 'education' }"
-                        class="nav-btn"
-                    >
-                        Education
-                    </button>
-                    <button 
-                        @click="selectSection('languages')" 
-                        :class="{ active: activeSection === 'languages' }"
-                        class="nav-btn"
-                    >
-                        Languages
-                    </button>
+                    <template x-for="section in ['experiences', 'skills', 'education', 'languages']" :key="section">
+                        <a x-bind:href="'#cv/' + section" style="text-decoration: none; color: inherit;">
+                            <button 
+                                @click="selectSection(section)" 
+                                :class="{ active: activeSection === section }"
+                                class="nav-btn"
+                            >
+                                <span x-text="section.charAt(0).toUpperCase() + section.slice(1)"></span>
+                            </button>
+                        </a>
+                    </template>
                 </nav>
                 <a href="#" class="back-link">← Back</a>
             </div>
@@ -96,7 +82,7 @@
                 <div class="content-section" x-show="activeSection === 'experienceDetail'">
                     <h2 x-text="experienceMap[activeExperience] && experienceMap[activeExperience].title"></h2>
                     <p class="role-subtitle">
-                        <a style="color: inherit; text-decoration: inherit;" x-text="experienceMap[activeExperience] && experienceMap[activeExperience].company" x-bind:href="experienceMap[activeExperience].companyLink" target="_blank" rel="noopener noreferrer"></a>
+                        <a style="color: inherit; text-decoration: inherit;" x-text="experienceMap[activeExperience] && experienceMap[activeExperience].company" x-bind:href="experienceMap[activeExperience] && experienceMap[activeExperience].companyLink" target="_blank" rel="noopener noreferrer"></a>
                         <span> • </span>
                         <span x-text="experienceMap[activeExperience] && experienceMap[activeExperience].location"></span>
                         <span> • </span>
@@ -112,48 +98,51 @@
                 <div class="content-section" x-show="activeSection === 'skills'">
                     <h2>Skills</h2>
                     <div class="skill-grid">
+                        <template x-for="(skillList, section) in skills" :key="section">
                         <div class="skill-item">
-                            <h3>Section 1</h3>
-                            <p>Skill 1, 2 & 3</p>
+                                <h3 x-text="section"></h3>
+                                <p x-text="skillList"></p>
                         </div>
+                            </template>
                     </div>
                 </div>
 
                 <div class="content-section" x-show="activeSection === 'education'">
                     <h2>Education</h2>
-                    <div class="education-item">
-                        <h3>Bachelor of Science in Computer Science</h3>
-                        <p class="role-subtitle">University of Technology • 2016 - 2020</p>
-                        <p>GPA: 3.8/4.0 • Relevant coursework: Web Development, Data Structures, Algorithms</p>
-                    </div>
+                    <template x-for="(edu, index) in educations" :key="index">
+                        <div class="education-item">
+                            <h3 x-text="edu.title"></h3>
+                            <p class="role-subtitle">
+                                <span x-text="edu.institution"></span>
+                                <span> • </span>
+                                <span x-text="edu.location"></span>
+                                <span> • </span>
+                                <span x-text="edu.startYear"></span> - <span x-text="edu.endYear"></span>
+                            </p>
+                            <p x-html="edu.description"></p>
+                        </div>
+                    </template>
                 </div>
 
                 <div class="content-section" x-show="activeSection === 'languages'">
                     <h2>Languages</h2>
-                    <div class="language-item">
-                        <div class="language-row">
-                            <span>French</span>
-                            <span class="level">Native</span>
+                    <template x-for="(level, language) in languages" :key="language">
+                        <div class="language-item">
+                            <div class="language-row">
+                                <span x-text="language"></span>
+                                <span class="level" x-text="level"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="language-item">
-                        <div class="language-row">
-                            <span>English</span>
-                            <span class="level">Fluent</span>
-                        </div>
-                    </div>
-                    <div class="language-item">
-                        <div class="language-row">
-                            <span>Japanese</span>
-                            <span class="level">Beginner</span>
-                        </div>
-                    </div>
+                    </template>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="experiences.js"></script>
+    <script src="data/experiences.js"></script>
+    <script src="data/education.js"></script>
+    <script src="data/languages.js"></script>
+    <script src="data/skills.js"></script>
     <script>
         function app() {
             return {
@@ -166,15 +155,28 @@
                 handleRoute() {
                     const hash = window.location.hash.slice(1) || 'home';
                     // Nested route: cv/experience/<id>
-                    if (hash === 'cv') {
+                    if (hash === 'cv/experiences' || hash === 'cv') {
                         this.currentPage = 'cv';
                         this.activeSection = 'experiences';
                         this.activeExperience = null;
+                        window.location.hash = 'cv/experiences';
                     } else if (hash.startsWith('cv/experience/')) {
                         this.currentPage = 'cv';
                         this.activeSection = 'experienceDetail';
                         this.activeExperience = hash.split('/')[2];
-                    } else {
+                    } else if (hash === 'cv/skills') {
+                        this.currentPage = 'cv';
+                        this.activeSection = 'skills';
+                        this.activeExperience = null;
+                    } else if (hash === 'cv/education') {
+                        this.currentPage = 'cv';
+                        this.activeSection = 'education';
+                        this.activeExperience = null;
+                    } else if (hash === 'cv/languages') {
+                        this.currentPage = 'cv';
+                        this.activeSection = 'languages';
+                        this.activeExperience = null;
+                    }  else {
                         this.currentPage = 'home';
                         this.activeSection = 'experiences';
                     }
@@ -182,8 +184,6 @@
                 
                 selectSection(section) {
                     this.activeSection = section;
-                    // update hash for deep-linking
-                    if (section === 'experiences') window.location.hash = 'cv';
                 },
                 
                 toggleExperience(index) {
