@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
 </head>
 <body x-data="app()" x-init="init()" x-effect="handleRoute()" :class="theme">
     <header>
@@ -71,29 +72,19 @@
             <div class="cv-main">
                 <div class="content-section" x-show="activeSection === 'experiences'">
                     <h2>Experiences</h2>
-                    <a href="#cv/experience/senior" class="experience-item link">
-                        <div class="experience-header">
-                            <div class="experience-title">
-                                <h3>Lorem Ipsum</h3>
-                                <p class="role-subtitle">Tech Company • 2022 - Present</p>
+                    <template x-for="(exp, index) in experienceMap" :key="index">
+                        <a x-bind:href="'#cv/experience/' + index" class="experience-item link">
+                            <div class="experience-header">
+                                <div class="experience-title">
+                                    <h3 x-text="exp.title"></h3>
+                                    <p class="role-subtitle" x-text="exp.subtitle"></p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="experience-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. .</p>
-                        </div>
-                    </a>
-
-                    <a href="#cv/experience/frontend" class="experience-item link">
-                        <div class="experience-header">
-                            <div class="experience-title">
-                                <h3>Lorem Ipsum</h3>
-                                <p class="role-subtitle">Startup Inc • 2020 - 2022</p>
+                            <div class="experience-content">
+                                <p x-text="exp.description"></p>
                             </div>
-                        </div>
-                        <div class="experience-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. .</p>
-                        </div>
-                    </a>
+                        </a>
+                    </template>
                 </div>
 
                 <div class="content-section" x-show="activeSection === 'experienceDetail'">
@@ -147,6 +138,7 @@
         </div>
     </main>
 
+    <script src="experiences.js"></script>
     <script>
         function app() {
             return {
@@ -155,18 +147,6 @@
                 expandedExp: [],
                 theme: 'light',
                 activeExperience: null,
-                experienceMap: {
-                    senior: {
-                        title: 'Lorem Ipsum',
-                        subtitle: 'Tech Company • 2022 - Present',
-                        body: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. .</p>'
-                    },
-                    frontend: {
-                        title: 'Lorem Ipsum',
-                        subtitle: 'Startup Inc • 2020 - 2022',
-                        body: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. .</p>'
-                    }
-                },
                 
                 handleRoute() {
                     const hash = window.location.hash.slice(1) || 'home';
