@@ -64,7 +64,7 @@
                                 <div class="experience-title">
                                     <h3 x-text="exp.title"></h3>
                                     <p class="role-subtitle">
-                                        <span x-text="exp.company"></span>
+                                        <span x-html="exp.company"></span>
                                         <span> • </span>
                                         <span x-text="exp.location"></span>
                                         <span> • </span>
@@ -82,7 +82,7 @@
                 <div class="content-section" x-show="activeSection === 'experienceDetail'">
                     <h2 x-text="experienceMap[activeExperience] && experienceMap[activeExperience].title"></h2>
                     <p class="role-subtitle">
-                        <a style="color: inherit; text-decoration: inherit;" x-text="experienceMap[activeExperience] && experienceMap[activeExperience].company" x-bind:href="experienceMap[activeExperience] && experienceMap[activeExperience].companyLink" target="_blank" rel="noopener noreferrer"></a>
+                        <span x-html="experienceMap[activeExperience] && experienceMap[activeExperience].company"></span>
                         <span> • </span>
                         <span x-text="experienceMap[activeExperience] && experienceMap[activeExperience].location"></span>
                         <span> • </span>

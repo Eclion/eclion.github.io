@@ -26,22 +26,41 @@ Tasks:
 const experienceMap = {
     sreBatch: {
         title: 'DevOps/Site Reliability Engineer',
-        company: 'Batch',
-        companyLink: 'https://batch.com',
+        company: '<a style="color: inherit; text-decoration: inherit;" href="https://batch.com" target="_blank" rel="noopener noreferrer">Batch</a>',
         location: 'Lyon, France',
         period: '2021/09 - 2025/12',
-        description: 'SRE at Batch (tech team ~ 30, SRE team ~ 6), in an environment with high availability requirements based on baremetal servers running Kubernetes, Kafka, Cassandra, etc.',
+        description: 'DevOps/SRE in a relatively small SRE team (3-6 out of 20-30 in the tech dpt.), in an environment with high availability requirements based on baremetal servers running Kubernetes, Kafka, Cassandra, etc.',
         body: sreBatchBody,
         tags: []
     },
     consultantEnxBnppf: {
-        title: 'Lorem Ipsum',
-        company: 'Startup Inc',
-        companyLink: 'https://startup-inc.com',
+        title: 'Consultant in data engineering',
+        company: '<a style="color: inherit; text-decoration: inherit;" href="https://www.bnpparibasfortis.be" target="_blank" rel="noopener noreferrer">BNP Paribas Fortis</a> (through <a style="color: inherit; text-decoration: inherit;" href="https://euranova.eu" target="_blank" rel="noopener noreferrer">EURA NOVA</a>)',
         location: 'Brussels, Belgium',
-        period: '2020 - 2022',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        period: '2020/05 - 2021/09',
+        description: 'Development of Flink jobs in the context of a platform migration.',
         body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
         tags: []
-    }
+    },
+    consultantEnxBics: {
+        title: 'Consultant in data engineering',
+        company: '<a style="color: inherit; text-decoration: inherit;" href="https://www.bics.com/" target="_blank" rel="noopener noreferrer">BICS</a> (through <a style="color: inherit; text-decoration: inherit;" href="https://euranova.eu" target="_blank" rel="noopener noreferrer">EURA NOVA</a>)',
+        location: 'Brussels, Belgium',
+        period: '2019/02 - 2020/03',
+        description: 'Collaboration with the data scientists in order to deliver prod ready packages of the models, as well as preparing the data with a deidcated ingestion & processing pipeline.',
+        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        tags: []
+    },
+    consultantEnxSwift: {
+        title: 'Consultant in data engineering',
+        company: '<a style="color: inherit; text-decoration: inherit;" href="https://www.swift.com/" target="_blank" rel="noopener noreferrer">Swift</a> (through <a style="color: inherit; text-decoration: inherit;" href="https://euranova.eu" target="_blank" rel="noopener noreferrer">EURA NOVA</a>)',
+        location: 'La Hulpe, Belgium',
+        period: '2015/11 - 2018/12',
+        description: 'Realisation of a logging platform on baremetal based on the ELK stack, with a Kafka-based log collection system and a custom log parsing solution to extract structured data from unstructured logs.',
+        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        tags: []
+    },
+    /*internKeio: {
+
+    }*/
 };
