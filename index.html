@@ -77,7 +77,13 @@
                             <div class="experience-header">
                                 <div class="experience-title">
                                     <h3 x-text="exp.title"></h3>
-                                    <p class="role-subtitle" x-text="exp.subtitle"></p>
+                                    <p class="role-subtitle">
+                                        <span x-text="exp.company"></span>
+                                        <span> • </span>
+                                        <span x-text="exp.location"></span>
+                                        <span> • </span>
+                                        <span x-text="exp.period"></span>
+                                    </p>
                                 </div>
                             </div>
                             <div class="experience-content">
@@ -89,9 +95,18 @@
 
                 <div class="content-section" x-show="activeSection === 'experienceDetail'">
                     <h2 x-text="experienceMap[activeExperience] && experienceMap[activeExperience].title"></h2>
-                    <p class="role-subtitle" x-text="experienceMap[activeExperience] && experienceMap[activeExperience].subtitle"></p>
+                    <p class="role-subtitle">
+                        <a style="color: inherit; text-decoration: inherit;" x-text="experienceMap[activeExperience] && experienceMap[activeExperience].company" x-bind:href="experienceMap[activeExperience].companyLink" target="_blank" rel="noopener noreferrer"></a>
+                        <span> • </span>
+                        <span x-text="experienceMap[activeExperience] && experienceMap[activeExperience].location"></span>
+                        <span> • </span>
+                        <span x-text="experienceMap[activeExperience] && experienceMap[activeExperience].period"></span>
+                    </p>
+                    </br>
                     <div class="experience-body" x-html="experienceMap[activeExperience] && experienceMap[activeExperience].body"></div>
-                    <p style="margin-top:16px"><a href="#cv">← Back to CV</a></p>
+                    <p style="margin-top:16px">
+                        <a class="subtext" :class="theme" style="text-decoration: none;" href="#cv">← Back to CV</a>
+                    </p>
                 </div>
 
                 <div class="content-section" x-show="activeSection === 'skills'">
