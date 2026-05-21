@@ -1,7 +1,7 @@
 const skills = {
-    "Section 1": ["Skill 1", "2", "3"],
-    "Section é": ["Skill 1", "2", "3"],
-    "Section e": ["Skill 1", "2", "3"],
-    "Section d": ["Skill 1", "2", "3"],
-    "Section c": ["Skill 1", "2", "3"],
+    "Infrastructure": ["Ansible", "Kubernetes", "Docker", "Terraform", "Pulumi", "VictoriaMetrics"],
+    "Data Engineering": ["Spark", "Flink", "Kafka", "Cassandra"],
+    "DevOps": ["Jenkins", "GitHub Actions"],
+    "Cloud": ["AWS (r53, IAM, S3)"],
+    "Programming": ["Python", "Java", "Go", "Bash"],
 }

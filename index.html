@@ -20,7 +20,7 @@
     <main class="home-page" x-show="currentPage === 'home'" role="main">
         <h1 class="title">William Deveaux</h1>
         <p class="subtext" :class="theme">
-            DevOps/Site reliability engineer. Aiming for the platform engineering part of DevOps.</br></br>
+            DevOps/Site reliability engineer. Aiming for the platform engineering part of DevOps.<br/><br/>
             Gamer & furniture DYI amateur on my free time.
         </p>
         <div class="links" aria-label="links">
@@ -88,7 +88,7 @@
                         <span> • </span>
                         <span x-text="experienceMap[activeExperience] && experienceMap[activeExperience].period"></span>
                     </p>
-                    </br>
+                    <br/>
                     <div class="experience-body" x-html="experienceMap[activeExperience] && experienceMap[activeExperience].body"></div>
                     <p style="margin-top:16px">
                         <a class="subtext" :class="theme" style="text-decoration: none;" href="#cv">← Back to CV</a>
