@@ -19,6 +19,7 @@
     <!-- Home Page -->
     <main class="home-page" x-show="currentPage === 'home'" role="main">
         <h1 class="title">William Deveaux</h1>
+        <h3 class="title">Work In Progress</h3>
         <p class="subtext" :class="theme">
             DevOps/Site reliability engineer. Aiming for the platform engineering part of DevOps.<br/><br/>
             Gamer & furniture DYI amateur on my free time.
@@ -113,7 +114,7 @@
                         <div class="education-item">
                             <h3 x-text="edu.title"></h3>
                             <p class="role-subtitle">
-                                <span x-text="edu.institution"></span>
+                                <span x-html="edu.institution"></span>
                                 <span> • </span>
                                 <span x-text="edu.location"></span>
                                 <span> • </span>

@@ -36,17 +36,23 @@ Ususal tasks:
 <details>
     <summary>Introduction of Pulumi to ease the provisioning of platform's servers</summary>
     Migration of the DNS entries provisioning done by Ansible on Bind to a self-registration of the hosts using Bind and Consul
+    Simplification du process de provisioning de serveurs passant de scripts python et 3 playbooks Ansible à un système alliant Packer, Pulumi et Ansible, réduisant ainsi les étapes de provisioning et les erreurs humaines.
 </details>
 <details>
     <summary>Setup of the backup system for Cassandra</summary>
     Zero-downtime upgrades of 30+nodes Cassandra clusters
+    Mises à jour sans coupures de clusters Cassandra, allant d’un design du plan de mise à jour, au pilotage de cette mise à jour nécessitant une coordination transverse des équipes afin de pouvoir basculer les applications entre les datacenters d’un même cluster Cassandra.
     Implementation of a software to partially restore a Cassandra backup made by Medusa
 </details>
 <details>
     <summary>Deployment of Vault in Kubernetes along with service-account based authentications for applications</summary>
 </details>
 <details>
-    <summary>Migration of AWS entities and GitHub repository management under IaC</summary>
+    <summary>Passage sous IaC des buckets, de l’IAM et des entrées DNS de Route53 chez AWS sous Terraform</summary>
+</details>
+<details>
+    <summary>Migration de 400+ repos GitLab vers GitHub, dans un but de réduire la surface de maintenance demandée à l’équipe SRE</summary>
+    
 </details>
 <details>
     <summary>Evolution of the infrastructure networking</summary>
@@ -57,28 +63,74 @@ Ususal tasks:
     Migration of IPTables to NFTables through Ansible
     Setup of OpenTelemetry to scrap Talos hosts metrics
 </details>
-
 `
 
-/*
-Simplification du process de provisioning de serveurs passant de scripts python et 3 playbooks Ansible à un système alliant Packer, Pulumi et Ansible, réduisant ainsi les étapes de provisioning et les erreurs humaines.
+consultantEnxBnppfBody = `
+Au sein de l’équipe gérant le logging interne chez BNPPF, j’ai rejoins l’équipe Logging et Monitoring dans la migration de leur infrastructure de logging dans le cadre de cette mission commissionée auprès de l’entreprise EURA NOVA.
 
-· Passage en haute disponibilité de serveurs MariaDB, via Orchestrator, KeepAlived, Consul, HAProxy, design & implémentation d’une application en Golang pour remettre dans un cluster un noeud master précédemment tombé, faisant gagner en résilience l’infrastructure.
+La précédente version de cette infrastructure était basée sur un ensemble de fichiers non structurés, lu de manière plannifiées par des applications faites maison dans le but de générer une table MSSQL par jour.
 
-· Mises à jour sans coupures de clusters Cassandra, allant d’un design du plan de mise à jour, au pilotage de cette mise à jour nécessitant une coordination transverse des équipes afin de pouvoir basculer les applications entre les datacenters d’un même cluster Cassandra.
+La nouvelle version est centrée sur Kafka & Flink, afin de centralisé l’afflux des logs applicatifs, de pouvoir parser ces dernier et les stocker dans une solution S3 interne pour le cold storage, ainsi que dans Elasticsearch pour du storage plus court terme.
 
-· Mise en place de backups Cassandra via Medusa, et implémentation d’outil de restauration de sauvegarde de données Cassandra afin de combler le manque de fonctionalité au niveau de la restauration de données via Medusa
+Mon role au sein de cet équipe a été le design de Job Flink ainsi que leur implémentation, ainsi que l’exploration de solutions similaire à Flink afin d’informer l’équipe sur la judicité de leur choix technique tout en respectant les contraintes du secteur.
+`
 
-· Migration DNS sous le DNS de Consul afin de permettre aux serveurs de s’auto enregistre au sein de notre infrastructure, ainsi que d’y enregistrer les services tournent sur ces serveurs
+consultantEnxBicsBody = `
+Au sein de l’entreprise BICS, j’ai collaboré avec deux équipes.
 
-· Introduction de Vault dans Kubernetes, permettant aux applications de pouvoir s’authentifier au sein de Vault via service accounts ainsi que de pouvoir utiliser les différentes fonctionalitées de Vault, tel les secret engines.
+La première équipe a eu pour responsabilité la migration d’une application centrée Informatica sur Teradata vers plusieurs applications autour de l’écosystème Hadoop+Spark, afin de pouvoir non seulement réduire les couts d’infrastructure, mais également de profiter d’une infrastructure plus flexible.
 
-· Migration de 400+ repos GitLab vers GitHub, dans un but de réduire la surface de maintenance demandée à l’équipe SRE
+Cette nouvelle infrastructure est composée de scripts python récoltant des fichiers sur un serveur FTP, fichiers ensuite lus par Apache Nifi pour les envoyer sur Hadoop HDFS. Des jobs Spark sont implémentés pour lire ces fichiers, enrichir les entrées, les transformer et les restocker dans HDFS, selon la logique précédemment définie dans Teradata.
 
-· Mise à jour de notre playbook Ansible gérant les règles IPTables en passants ces dernières sous NFTables, ainsi que déploiement de cette mise à jour dans les différents environnements.
+La seconde équipe que j’ai rejoins a pour role de rechercher et d’effectuer des analyses avancées des données internes. Avec cette équipe, j’ai pu interagir de prêt avec les data scientists pour industrialiser leur modèles ainsi qu’explorer différentes possibilité de parallelisations.
 
-· Passage sous IaC des buckets, de l’IAM et des entrées DNS de Route53 chez AWS sous Terraform
-*/
+Réalisations :
+
+- Extraction de la logique de précédentes requêtes SQL pour passer le processing sous jobs Spark
+
+- Design & implémentation d’une pipeline de préparation de données pour futures exécutions de modèles alliant SQOOP, HDFS, Spark
+
+- Utilisation d’Avro afin de bénéficier de la vérification de schéma, via le schema registry Atlas, dans le traitement de données mentionné au dessus.
+
+- Lead de deux personnes sur le sujet de la préparation de données
+
+- Conversion de modèles python vers des jobs Spark
+
+- Industrialisation de notebooks Jupyter en packages python pour leur exécution en production
+
+- Contribution aux dashboard QlikSense 
+`
+
+consultantEnxSwiftBody = `
+Au sein de l’équipe logging & monitoring, j’ai participé à la mise en place de la plateforme de logging interne dans le but de facilité l’analyse des logs des différentes applications interne.
+
+Cette plateforme, installée sur du baremetal en interne, est constituée d’Apache Flume et d’Apache Flink pour l’ingestion et la collecte des logs, d’Apache Kafka comme système de log, d’Apache Spark pour le traitement des logs, et de la stack ELK pour le stockage à chaud et la visualisation des logs. Hadoop HDFS est également installé afin de pouvoir bénéficier du stockage à froid de la donnée. 
+
+Réalisations :
+
+- Implémentation en équipe de la plateforme de logging, de la gestion des machines, la conteneurisation des logiciels et la mise en place des flux de logs en production
+
+- Configuration de la sécurity sur la stack ELK via SearchGuard
+
+- Design et implémentation de job Spark & Flink
+
+- Design & Implémentation d’une pipeline Jenkins simplifiant la génération de code & pipeline de déploiement à destination des autres équipes
+
+- Design et implémentation d’outils utilisé par les employés business afin de faciliter l’ingestions de leurs exports, leur permettant de corréler facilement leur donnée
+
+- Mise en place du cluster HDFS avec un dispositif de réingestion de données ainsi que la mise en place d’Apache Zeppelin en tant que lab analytique
+
+- Implémentation et maintenance des playbooks ansible pour le provisioning de la plateforme
+
+- Installation d’une solution de monitoring basée sur la stack ELK
+
+- Travail en équipe, allant de 3 à 9 personnes dont certaines à Singapour
+
+- Utilisation de Docker pour isoler certains process et faciliter le déploiement de certaines applications
+
+- Extraction de la logique de précédentes requêtes SQL pour passer le processing sous jobs Spark 
+`
+
 
 const experienceMap = {
     sreBatch: {
@@ -88,7 +140,7 @@ const experienceMap = {
         period: '2021/09 - 2025/12',
         description: 'DevOps/SRE in a relatively small SRE team (3-6 out of 20-30 in the tech dpt.), in an environment with high availability requirements based on baremetal servers running Kubernetes, Kafka, Cassandra, etc.',
         body: sreBatchBody,
-        tags: []
+        tags: ["Ansible", "Kubernetes", "Docker", "Terraform", "Pulumi", "VictoriaMetrics", "Linux", "Kafka", "Cassandra", "GitHub Actions", "AWS", "Python", "Go", "Bash", "HAProxy", "Consul", "KeepAlived", "Orchestrator", "Packer", "Consul-template", "Medusa", "Vault", "NFTables", "OpenTelemetry"]
     },
     consultantEnxBnppf: {
         title: 'Consultant in data engineering',
@@ -96,8 +148,8 @@ const experienceMap = {
         location: 'Brussels, Belgium',
         period: '2020/05 - 2021/09',
         description: 'Development of Flink jobs in the context of a platform migration.',
-        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        tags: []
+        body: consultantEnxBnppfBody,
+        tags: ["Linux", "Kafka", "Flink", "S3", "Elasticsearch"]
     },
     consultantEnxBics: {
         title: 'Consultant in data engineering',
@@ -105,8 +157,8 @@ const experienceMap = {
         location: 'Brussels, Belgium',
         period: '2019/02 - 2020/03',
         description: 'Collaboration with the data scientists in order to deliver prod ready packages of the models, as well as preparing the data with a deidcated ingestion & processing pipeline.',
-        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        tags: []
+        body: consultantEnxBicsBody,
+        tags: ["Python", "Spark", "Hadoop", "Nifi", "SQL", "Avro", "Atlas", "SQOOP", "HDFS", "Jupyter", "QlikSense", "Jenkins", "Scala", "SQL"]
     },
     consultantEnxSwift: {
         title: 'Consultant in data engineering',
@@ -114,8 +166,8 @@ const experienceMap = {
         location: 'La Hulpe, Belgium',
         period: '2015/11 - 2018/12',
         description: 'Realisation of a logging platform on baremetal based on the ELK stack, with a Kafka-based log collection system and a custom log parsing solution to extract structured data from unstructured logs.',
-        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        tags: []
+        body: consultantEnxSwiftBody,
+        tags: ["Jenkins", "Kafka", "Elasticsearch", "Logstash", "Kibana", "Linux", "Flink", "Spark", "Docker", "Ansible", "Hadoop", "HDFS", "SearchGuard", "Jupyter", "Python", "Scala"]
     },
     /*internKeio: {
 
