@@ -14,54 +14,75 @@ Ususal tasks:
 <details>
     <summary>Implementation of high availability for MariaDB clusters</summary>
     <br/>
-    Previously, Batch was using few MariaDB clusters composed of 2 nodes (1 main & 1 replica), without any automatic failover in case the main node was crashing.<br/>
-    Such situation meant that in case of a main node failure, the failover had to be done manually along with the reconfiguration of the applications.<br/>
-    Hence, I had been tasked to investigate, propose and implement a solution to have an automatic failover of these clusters, providing this way high availability.<br/>
-    <br/>
-    The solution selected is based on <a href="https://github.com/orchestrator/orchestrator">Orchestrator</a>, a tool authored by Shlomi Noach, which performs an automatic failover depending on the health of the nodes.
-    Though, the tool by itself isn't enough to provide high availability, and few other pieces of software were introduced:
-    <ul>
-        <li><b>Consul</b> has been configured as the backend for Orchestrator.</li>
-        <li>So <b>HAProxy</b> could be configured dynamically thanks to <b>Consul-template</b> in order for the traffic to always be routed toward the main node.</li>
-        <li>Finally, <b>KeepAlived</b> was used to provide a virtual IP for the cluster's hosts, removing the need to manually reconfigure the applications when a node host crashes.</li>
-    </ul>
-    <br/>
-    Still this solution didn't cover the reinstatement of a crashed main node back into the cluster, but this part has been implemented through a custom made application in Golang.<br/>
-    
-    The implementation of this solution has been realised live, on all environments without downtime for the clusters and the applications.
-    <br/>
-    <hr/>
-    <br/>
+    <div class="grid-with-img">
+        <div class="text-away-img">
+        Previously, Batch was using few MariaDB clusters composed of 2 nodes (1 main & 1 replica), without any automatic failover in case the main node was crashing.<br/>
+        Such situation meant that in case of a main node failure, the failover had to be done manually along with the reconfiguration of the applications.<br/>
+        Hence, I had been tasked to investigate, propose and implement a solution to have an automatic failover of these clusters, providing this way high availability.<br/>
+        <br/>
+        </div>
+        <div class="text-next-img">        
+            The solution selected is based on <a href="https://github.com/orchestrator/orchestrator">Orchestrator</a>, a tool authored by Shlomi Noach, which performs an automatic failover depending on the health of the nodes.
+            Though, the tool by itself isn't enough to provide high availability, and few other pieces of software were introduced:
+            <ul>
+                <li><b>Consul</b> has been configured as the backend for Orchestrator.</li>
+                <li>So <b>HAProxy</b> could be configured dynamically thanks to <b>Consul-template</b> in order for the traffic to always be routed toward the main node.</li>
+                <li>Finally, <b>KeepAlived</b> was used to provide a virtual IP for the cluster's hosts, removing the need to manually reconfigure the applications when a node host crashes.</li>
+            </ul>
+        </div>
+        <div class="img-in-grid" style="text-align: center">
+            <img style="max-width: 100%; max-height: 600px; object-fit: cover;" src="graphs/mariadb-ha.svg" alt="MariaDB High Availability"/>
+        </div>
+        <div class="text-away-img">
+        Still this solution didn't cover the reinstatement of a crashed main node back into the cluster, but this part has been implemented through a custom made application in Golang.<br/>
+        The implementation of this solution has been realised live, on all environments without downtime for the clusters and the applications.
+        <br/>
+        </div>
+    </div>
+    <br/><hr/><br/>
 </details>
 <details>
     <summary>Introduction of Pulumi to ease the provisioning of platform's servers</summary>
+    <br/>
     Migration of the DNS entries provisioning done by Ansible on Bind to a self-registration of the hosts using Bind and Consul
     Simplification du process de provisioning de serveurs passant de scripts python et 3 playbooks Ansible à un système alliant Packer, Pulumi et Ansible, réduisant ainsi les étapes de provisioning et les erreurs humaines.
+    <br/><hr/><br/>
 </details>
 <details>
     <summary>Setup of the backup system for Cassandra</summary>
+    <br/>
     Zero-downtime upgrades of 30+nodes Cassandra clusters
     Mises à jour sans coupures de clusters Cassandra, allant d’un design du plan de mise à jour, au pilotage de cette mise à jour nécessitant une coordination transverse des équipes afin de pouvoir basculer les applications entre les datacenters d’un même cluster Cassandra.
     Implementation of a software to partially restore a Cassandra backup made by Medusa
+    <br/><hr/><br/>
 </details>
 <details>
     <summary>Deployment of Vault in Kubernetes along with service-account based authentications for applications</summary>
+    <br/>
+    <br/><hr/><br/>
 </details>
 <details>
     <summary>Passage sous IaC des buckets, de l’IAM et des entrées DNS de Route53 chez AWS sous Terraform</summary>
+    <br/>
+    <br/><hr/><br/>
 </details>
 <details>
     <summary>Migration de 400+ repos GitLab vers GitHub, dans un but de réduire la surface de maintenance demandée à l’équipe SRE</summary>
-    
+    <br/>
+    <br/><hr/><br/>    
 </details>
 <details>
     <summary>Evolution of the infrastructure networking</summary>
+    <br/>
     Migration of IPTables to NFTables through Ansible
+    <br/><hr/><br/>
 </details>
 <details>
     <summary>Improvement of the infrastructure logging</summary>
+    <br/>
     Migration of IPTables to NFTables through Ansible
     Setup of OpenTelemetry to scrap Talos hosts metrics
+    <br/><hr/><br/>
 </details>
 `
 

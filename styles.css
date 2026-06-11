@@ -401,3 +401,48 @@ h1.title{
     .level{color:#999}
     .back-link:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.06)}
 }
+
+.grid-with-img{
+  display: grid;
+  /*padding: 1em;*/
+  grid-gap: 20px; /*1em;*/
+  
+  @media screen and (min-width: 1000px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media screen and (max-width: 1000px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.text-away-img{
+  @media screen and (min-width: 1600px) {
+    grid-column: 1;
+  }
+  @media screen and (max-width: 1600px) {
+    grid-column-start: 1;
+    grid-column-end: span 2;
+  }
+}
+
+.img-in-grid{
+  @media screen and (min-width: 1000px) {
+    grid-column: 2;
+  }
+  
+  @media screen and (max-width: 1000px) {
+    grid-column: 1;
+  }
+
+  @media screen and (min-width: 1600px) {
+    grid-row-start: 1;
+    grid-row-end: span 4;
+  }
+  @media screen and (max-width: 1600px) {
+    grid-row: 2;
+  }
+}
+
+.text-next-img{
+    grid-column: 1
+}
