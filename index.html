@@ -25,7 +25,7 @@
             Gamer & furniture DYI amateur on my free time.
         </p>
         <div class="links" aria-label="links">
-            <a href="#cv">CV</a>
+            <a href="#cv">Resume</a>
             <a href="#projects">Projects</a>
         </div>
     </main>
@@ -36,7 +36,7 @@
         <div class="cv-sidebar-wrapper">
             <div class="cv-sidebar">
                 <h5 style="margin-bottom: 0;">William Deveaux</h5>
-                <div class="cv-title">CV</div>
+                <div class="cv-title">Resume</div>
                 <nav class="cv-nav">
                     <template x-for="section in ['experiences', 'skills', 'education', 'languages']" :key="section">
                         <a x-bind:href="'#cv/' + section" style="text-decoration: none; color: inherit;">
@@ -62,7 +62,7 @@
                     <template x-for="(exp, index) in experienceMap" :key="index">
                         <a x-bind:href="'#cv/experience/' + index" class="experience-item link">
                             <div class="experience-header">
-                                <div class="experience-title">
+                                <div class="experience-title" style="text-wrap: wrap;">
                                     <h3 x-text="exp.title"></h3>
                                     <p class="role-subtitle">
                                         <span x-html="exp.company"></span>
@@ -98,13 +98,13 @@
 
                 <div class="content-section" x-show="activeSection === 'skills'">
                     <h2>Skills</h2>
-                    <div class="skill-grid">
+                    <div class="skill-grid" style="word-wrap: anywhere;">
                         <template x-for="(skillList, section) in skills" :key="section">
-                        <div class="skill-item">
+                            <div class="skill-item">
                                 <h3 x-text="section"></h3>
                                 <p x-text="skillList"></p>
-                        </div>
-                            </template>
+                            </div>
+                        </template>
                     </div>
                 </div>
 
