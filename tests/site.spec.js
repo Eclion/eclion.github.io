@@ -18,6 +18,9 @@ test.describe('home page', () => {
     test('footer credits Claude', async ({ page }) => {
         await page.goto('/');
         await expect(page.locator('.global-footer')).toContainText('Partly vibed with Claude');
+        const icon = page.locator('.footer-icon');
+        await expect(icon).toBeVisible();
+        expect(await icon.evaluate((el) => el.complete && el.naturalWidth > 0)).toBe(true);
     });
 
     test('Resume link opens the CV experiences section', async ({ page }) => {
