@@ -4,25 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>eclion</title>
+    <script>
+        (function () {
+            var saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) {}
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+        })();
+    </script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
 </head>
-<body x-data="app()" x-init="init()" x-effect="handleRoute()" :class="theme">
+<body>
     <header>
-        <button class="theme-toggle" @click="toggleTheme()">
-            <i class="" :class="theme === 'dark' ? 'fa-regular fa-sun' : 'fa-solid fa-moon'"></i>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+            <i class="icon-sun fa-regular fa-sun" aria-hidden="true"></i>
+            <i class="icon-moon fa-solid fa-moon" aria-hidden="true"></i>
         </button>
     </header>
 
     <!-- Home Page -->
-    <main class="home-page" x-show="currentPage === 'home'" role="main">
+    <main id="page-home" class="home-page">
         <h1 class="title">William Deveaux</h1>
         <h3 class="title">Work In Progress</h3>
-        <p class="subtext" :class="theme">
+        <p class="subtext">
             DevOps/Site reliability engineer. Aiming for the platform engineering part of DevOps.<br/><br/>
-            Gamer & furniture DYI amateur on my free time.
+            Gamer &amp; furniture DIY amateur on my free time.
         </p>
         <div class="links" aria-label="links">
             <a href="#cv">Resume</a>
@@ -31,187 +38,57 @@
     </main>
 
     <!-- CV Page -->
-    <main class="cv-page" x-show="currentPage === 'cv'" role="main">
-        <!-- Left Panel (Fixed) -->
-        <div class="cv-sidebar-wrapper">
-            <div class="cv-sidebar">
-                <h5 style="margin-bottom: 0;">William Deveaux</h5>
-                <div class="cv-title">Resume</div>
-                <nav class="cv-nav">
-                    <template x-for="section in ['experiences', 'skills', 'education', 'languages']" :key="section">
-                        <a x-bind:href="'#cv/' + section" style="text-decoration: none; color: inherit;">
-                            <button 
-                                @click="selectSection(section)" 
-                                :class="{ active: activeSection === section }"
-                                class="nav-btn"
-                            >
-                                <span x-text="section.charAt(0).toUpperCase() + section.slice(1)"></span>
-                            </button>
-                        </a>
-                    </template>
-                </nav>
-                <a href="#" class="back-link">← Back</a>
-            </div>
+    <main id="page-cv" class="cv-page" hidden>
+        <div class="cv-sidebar">
+            <h5 class="cv-name">William Deveaux</h5>
+            <div class="cv-title">Resume</div>
+            <nav class="cv-nav">
+                <a class="nav-btn" href="#cv/experiences" data-section="experiences">Experiences</a>
+                <a class="nav-btn" href="#cv/skills" data-section="skills">Skills</a>
+                <a class="nav-btn" href="#cv/education" data-section="education">Education</a>
+                <a class="nav-btn" href="#cv/languages" data-section="languages">Languages</a>
+            </nav>
+            <a href="#" class="back-link">← Back</a>
         </div>
 
-        <!-- Right Panel (Fixed) -->
-        <div class="cv-main-wrapper">
-            <div class="cv-main">
-                <div class="content-section" x-show="activeSection === 'experiences'">
-                    <h2>Experiences</h2>
-                    <template x-for="(exp, index) in experienceMap" :key="index">
-                        <a x-bind:href="'#cv/experience/' + index" class="experience-item link">
-                            <div class="experience-header">
-                                <div class="experience-title" style="text-wrap: wrap;">
-                                    <h3 x-text="exp.title"></h3>
-                                    <p class="role-subtitle">
-                                        <span x-html="exp.company"></span>
-                                        <span> • </span>
-                                        <span x-text="exp.location"></span>
-                                        <span> • </span>
-                                        <span x-text="exp.period"></span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="experience-content">
-                                <p x-text="exp.description"></p>
-                            </div>
-                        </a>
-                    </template>
-                </div>
+        <div class="cv-main">
+            <section id="section-experiences" class="content-section" hidden>
+                <h2>Experiences</h2>
+                <div class="section-body"></div>
+            </section>
 
-                <div class="content-section" x-show="activeSection === 'experienceDetail'">
-                    <h2 x-text="experienceMap[activeExperience] && experienceMap[activeExperience].title"></h2>
-                    <p class="role-subtitle">
-                        <span x-html="experienceMap[activeExperience] && experienceMap[activeExperience].company"></span>
-                        <span> • </span>
-                        <span x-text="experienceMap[activeExperience] && experienceMap[activeExperience].location"></span>
-                        <span> • </span>
-                        <span x-text="experienceMap[activeExperience] && experienceMap[activeExperience].period"></span>
-                    </p>
-                    <br/>
-                    <div class="experience-body" x-html="experienceMap[activeExperience] && experienceMap[activeExperience].body"></div>
-                    <p style="margin-top:16px">
-                        <a class="subtext" :class="theme" style="text-decoration: none;" href="#cv">← Back to CV</a>
-                    </p>
-                </div>
+            <section id="section-experience-detail" class="content-section" hidden>
+                <div class="section-body"></div>
+            </section>
 
-                <div class="content-section" x-show="activeSection === 'skills'">
-                    <h2>Skills</h2>
-                    <div class="skill-grid" style="word-wrap: anywhere;">
-                        <template x-for="(skillList, section) in skills" :key="section">
-                            <div class="skill-item">
-                                <h3 x-text="section"></h3>
-                                <p x-text="skillList"></p>
-                            </div>
-                        </template>
-                    </div>
-                </div>
+            <section id="section-skills" class="content-section" hidden>
+                <h2>Skills</h2>
+                <div class="section-body skill-grid"></div>
+            </section>
 
-                <div class="content-section" x-show="activeSection === 'education'">
-                    <h2>Education</h2>
-                    <template x-for="(edu, index) in educations" :key="index">
-                        <div class="education-item">
-                            <h3 x-text="edu.title"></h3>
-                            <p class="role-subtitle">
-                                <span x-html="edu.institution"></span>
-                                <span> • </span>
-                                <span x-text="edu.location"></span>
-                                <span> • </span>
-                                <span x-text="edu.startYear"></span> - <span x-text="edu.endYear"></span>
-                            </p>
-                            <p x-html="edu.description"></p>
-                        </div>
-                    </template>
-                </div>
+            <section id="section-education" class="content-section" hidden>
+                <h2>Education</h2>
+                <div class="section-body"></div>
+            </section>
 
-                <div class="content-section" x-show="activeSection === 'languages'">
-                    <h2>Languages</h2>
-                    <template x-for="(level, language) in languages" :key="language">
-                        <div class="language-item">
-                            <div class="language-row">
-                                <span x-text="language"></span>
-                                <span class="level" x-text="level"></span>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-            </div>
+            <section id="section-languages" class="content-section" hidden>
+                <h2>Languages</h2>
+                <div class="section-body"></div>
+            </section>
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="global-footer subtext">
+        <span>Partly vibed with</span>
+        <img class="footer-icon" src="https://claude.ai/favicon.ico" alt="Claude"/>
+        <span>Claude</span>
+    </footer>
 
     <script src="data/experiences.js"></script>
     <script src="data/education.js"></script>
     <script src="data/languages.js"></script>
     <script src="data/skills.js"></script>
-    <script>
-        function app() {
-            return {
-                currentPage: 'home',
-                activeSection: 'experiences',
-                expandedExp: [],
-                theme: 'light',
-                activeExperience: null,
-                
-                handleRoute() {
-                    const hash = window.location.hash.slice(1) || 'home';
-                    // Nested route: cv/experience/<id>
-                    if (hash === 'cv/experiences' || hash === 'cv') {
-                        this.currentPage = 'cv';
-                        this.activeSection = 'experiences';
-                        this.activeExperience = null;
-                        window.location.hash = 'cv/experiences';
-                    } else if (hash.startsWith('cv/experience/')) {
-                        this.currentPage = 'cv';
-                        this.activeSection = 'experienceDetail';
-                        this.activeExperience = hash.split('/')[2];
-                    } else if (hash === 'cv/skills') {
-                        this.currentPage = 'cv';
-                        this.activeSection = 'skills';
-                        this.activeExperience = null;
-                    } else if (hash === 'cv/education') {
-                        this.currentPage = 'cv';
-                        this.activeSection = 'education';
-                        this.activeExperience = null;
-                    } else if (hash === 'cv/languages') {
-                        this.currentPage = 'cv';
-                        this.activeSection = 'languages';
-                        this.activeExperience = null;
-                    }  else {
-                        this.currentPage = 'home';
-                        this.activeSection = 'experiences';
-                    }
-                },
-                
-                selectSection(section) {
-                    this.activeSection = section;
-                },
-                
-                toggleExperience(index) {
-                    if (this.expandedExp.includes(index)) {
-                        this.expandedExp = this.expandedExp.filter(i => i !== index);
-                    } else {
-                        this.expandedExp.push(index);
-                    }
-                },
-
-                toggleTheme() {
-                    this.theme = this.theme === 'dark' ? 'light' : 'dark';
-                },
-                
-                init() {
-                    window.addEventListener('hashchange', () => this.handleRoute());
-                    this.handleRoute();
-                }
-            }
-        }
-    </script>
-
-    <!-- Footer -->
-    <footer class="global-footer subtext" :class="theme">
-        <span>Partly vibed with</span>
-        <img class="github-icon" src="https://github.com/fluidicon.png" alt="GitHub"/>
-        <span>Copilot</span>
-    </footer>
+    <script src="app.js"></script>
 </body>
 </html>
